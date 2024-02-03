@@ -1,4 +1,5 @@
 #pragma once
+#include <stdio.h>
 
 /* Implements various functions to model light bounces between various objects
  * in the scene. Here, we use lightmaps, which represet a scene object like a
@@ -151,8 +152,7 @@ void compute_sphere_radiosity(Sphere& sphere) {
  * light which will be bounced around
  */
 void compute_illumination() {
-  os_PutStrFull("Computing Shadows");
-  os_NewLine();
+  printf("Computing Shadows\n");
 
   // Compute shading for all planes in the scene
   for (Plane& plane : sceneObjs) {
@@ -171,8 +171,7 @@ void compute_illumination() {
  * Generally results converge decently after 2 bounces for the provided scene
  */
 void compute_radiosity() {
-  os_PutStrFull("Computing Plane Radiosity");
-  os_NewLine();
+  printf("Computing Plane Radiosity\n");
   
   // Compute radiosity light bounces
   for (uint8_t i = 0; i < 2; i++) {
@@ -180,12 +179,12 @@ void compute_radiosity() {
     char str[2];
     str[0] = digits[i + 1];
     str[1] = '\0';
-    os_PutStrFull(str);
+    printf("%s", str);
 
     // As a progress indicator, each dot represents one plane's lightmap
     // being updated
     for (Plane& plane : sceneObjs) {
-      os_PutStrFull(".");
+      printf(".");
       compute_plane_radiosity(plane);
     }
 
@@ -195,22 +194,22 @@ void compute_radiosity() {
       plane.light_map.copy();
     }
   }
-  os_NewLine();
+  printf("\n");
 
   // Because spheres contribute less to global illumination compared to the
   // colored walls, their illumination is only included after radiosity for
   // planes has been fully computed
-  os_PutStrFull("Computing Sphere Radiosity");
+  printf("Computing Sphere Radiosity\n");
 
   for (Plane& plane : sceneObjs) {
     plane.light_map.from_bitmap();
   }
 
   for (Sphere& sphere : spheres) {
-    os_PutStrFull(".");
+    printf(".");
     if (!sphere.reflective) {
       compute_sphere_radiosity(sphere);
     }
   }
-  os_NewLine();
+  printf("\n");
 }

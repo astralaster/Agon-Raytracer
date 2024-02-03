@@ -1,3 +1,5 @@
+#include "agon.h"
+
 #include <tice.h>
 #include <graphx.h>
 #include <math.h>
@@ -244,7 +246,9 @@ void render_supersample() {
 
           color24 += error;
 
-          VRAM[pixelOff++] = color24.toColor16(error);
+          char color = RGB888toPackedRGB222(color24.r, color24.g, color24.b);
+
+          agon_plot_pixel(x, y, color);
         }
       }
 
@@ -277,17 +281,18 @@ void render() {
       
       color24 += error;
 
-      Color color = color24.toColor16(error);
+      // Convert 24bit color to 6bit color
+      char color = RGB888toPackedRGB222(color24.r, color24.g, color24.b);
 
       // If we are granularity 1, just place the pixel sequentially
       if (grain == 1) {
-        VRAM[pixelOff++] = color;
+        agon_plot_pixel(x, y, color);        
       }
       // Otherwise, fill a box with the color
       else {
         for (uint8_t py = 0; py < grain; py++) {
           for (uint8_t px = 0; px < grain; px++) {
-            VRAM[(x + px) + (LCD_WIDTH * (y + py))] = color;
+            agon_plot_pixel(x + px, y + py, color);
           }
         }
       }
@@ -297,8 +302,10 @@ void render() {
 
 int main(void)
 {
-  /* Clear the homescreen */
-  os_ClrHome();
+  agon_set_video_mode(8);
+  vdp_cursor_enable(false);
+  vdp_logical_scr_dims(false);
+  vdp_clear_screen();
 
   scene_init();
   
@@ -311,7 +318,7 @@ int main(void)
   }
   
   /* Waits for a key */
-  while (!os_GetCSC());
+  //while (!os_GetCSC());
 
   return 0;
 }

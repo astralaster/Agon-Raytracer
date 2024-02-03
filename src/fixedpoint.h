@@ -129,8 +129,8 @@ void print_fixed(Fixed24 &x) {
     n = n >> 4;
   }
 
-  os_PutStrFull((const char*)&str);
-  os_NewLine();
+  //os_PutStrFull((const char*)&str);
+  //os_NewLine();
 }
 
 /* Computes the square root of a fixed point number and returns
