@@ -302,6 +302,7 @@ void render() {
 
 int main(void)
 {
+  asm("di");
   agon_set_video_mode(8);
   vdp_cursor_enable(false);
   vdp_logical_scr_dims(false);
@@ -319,6 +320,6 @@ int main(void)
   
   /* Waits for a key */
   //while (!os_GetCSC());
-
+  asm("ei");
   return 0;
 }
