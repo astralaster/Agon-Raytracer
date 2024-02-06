@@ -282,7 +282,8 @@ void render() {
       color24 += error;
 
       // Convert 24bit color to 6bit color
-      char color = RGB888toPackedRGB222(color24.r, color24.g, color24.b);
+      char color = RGB888toPackedRGB222(color24.b, color24.g, color24.r);
+      color = agon_map_color_rgb_to_agon(color);
 
       // If we are granularity 1, just place the pixel sequentially
       if (grain == 1) {
@@ -307,6 +308,7 @@ int main(void)
   vdp_cursor_enable(false);
   vdp_logical_scr_dims(false);
   vdp_clear_screen();
+  //agon_set_palette_to_rgb();
 
   scene_init();
   
