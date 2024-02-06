@@ -281,5 +281,5 @@ Fixed24 atan2(Fixed24 &x, Fixed24 &y) {
   Fixed24 a = Fixed24(1) + asin(-norm_x);
   a.n >>= 1;
 
-  return y > Fixed24(0) ? a : Fixed24(2) - a;\
+  return y > Fixed24(0) ? a : Fixed24(2) - a;
 }
