@@ -10,14 +10,14 @@ _fp_mul:
 
   ld iy, $0
 
-  ; Align ix to below the stack. Zero-fill 48 bits
-  ld ix, $FFFFFA
+  ; Allocate 6 bytes on the stack, ptr in ix
+  push iy
+  push iy
+  ld ix, 0
   add ix, sp
-  ld (ix), iy
-  ld (ix + $3), iy
 
   ; Align iy to the arguments in the stack
-  ld iy, $C
+  ld iy, $12
   add iy, sp
 
   ; We use the E register to track whether we need to negate the result
@@ -178,6 +178,9 @@ abs_y_end:
   ld hl, (ix)
 
 negate_end:
+  ; unalloc 6 bytes
+  pop iy
+  pop iy
 
   pop iy
   pop bc
@@ -195,14 +198,14 @@ _fp_sqr:
 
   ld iy, $0
 
-  ; Align ix to below the stack. Zero-fill 48 bits
-  ld ix, $FFFFFA
+  ; Allocate 6 bytes on the stack, ptr in ix
+  push iy
+  push iy
+  ld ix, 0
   add ix, sp
-  ld (ix), iy
-  ld (ix + $3), iy
 
   ; Align iy to the arguments in the stack
-  ld iy, $C
+  ld iy, $12
   add iy, sp
 
   ; Take absolute value of the stack elements
@@ -303,6 +306,10 @@ abs_x_end_sqr:
   srl l
 
   add hl, bc
+
+  ; unalloc 6 bytes
+  pop iy
+  pop iy
 
   pop iy
   pop bc
