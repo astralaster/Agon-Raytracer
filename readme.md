@@ -10,3 +10,5 @@ A ray tracing engine written in C++/ASM for the TI-84 CE. This engine is capable
 - Dithering
 - Gamma correct rendering and HDR tone mapping
 - Global illumination through radiosity
+
+![screenshot running in the emulator](screenshots/Screenshot%20from%202024-07-05%2010-51-01.png)
